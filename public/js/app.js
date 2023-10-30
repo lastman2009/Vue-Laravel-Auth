@@ -19600,18 +19600,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      company: {}
+      company: {},
+      selectedImage: null
     };
   },
   methods: {
+    handleImageChange: function handleImageChange(event) {
+      this.selectedImage = event.target.files[0];
+    },
     addCompany: function addCompany() {
       var _this = this;
 
+      var formData = new FormData();
+      formData.append('logo', this.selectedImage);
+      formData.append('name', this.company.name);
+      formData.append('email', this.company.email);
+      formData.append('website', this.company.website);
       this.$axios.get('/sanctum/csrf-cookie').then(function (response) {
-        _this.$axios.post('/api/company', _this.company).then(function (response) {
-          _this.$router.push({
-            name: 'companies'
-          });
+        _this.$axios.post('/api/companies', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (response) {// this.$router.push({name: 'companies'})
         })["catch"](function (error) {
           console.error(error);
         });
@@ -20400,7 +20410,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)("div", null, [_hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("form", {
     onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
       return $options.addCompany && $options.addCompany.apply($options, arguments);
-    }, ["prevent"]))
+    }, ["prevent"])),
+    enctype: "multipart/form-data"
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_4, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
     type: "text",
     "class": "form-control",
@@ -20425,15 +20436,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.website]])]), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
-    type: "text",
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.website]])]), _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("input", {
+    type: "file",
+    ref: "image",
     "class": "form-control",
-    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $data.company.logo = $event;
+    onChange: _cache[4] || (_cache[4] = function () {
+      return $options.handleImageChange && $options.handleImageChange.apply($options, arguments);
     })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.company.logo]])]), _hoisted_15, _hoisted_16], 32
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  )]), _hoisted_15, _hoisted_16], 32
   /* HYDRATE_EVENTS */
   )])])]);
 }
@@ -20889,8 +20901,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
  // Set up axios globally:
 
 window.axios = (axios__WEBPACK_IMPORTED_MODULE_2___default()); // Configure the default headers for axios:
-
-(axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.headers.common["X-Requested-With"]) = 'XMLHttpRequest'; // Define the base URL for all axios requests:
+// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// Define the base URL for all axios requests:
 
 (axios__WEBPACK_IMPORTED_MODULE_2___default().defaults.baseURL) = 'http://localhost:8000';
 

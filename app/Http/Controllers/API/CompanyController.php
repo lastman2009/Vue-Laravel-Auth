@@ -34,7 +34,6 @@ class CompanyController extends Controller
             $logoPath = $request->file('logo')->store('public/logos');
             $validatedData['logo'] = $logoPath;
         }
-
         Company::create($validatedData); // Create a new company
 
         return redirect()->route('companies.index')->with('success', 'Company created successfully.');

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\CompanyController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('login', [UserController::class, 'login']);
@@ -16,5 +17,5 @@ Route::group(['prefix' => 'books', 'middleware' => 'auth:sanctum'], function () 
     Route::delete('delete/{id}', [BookController::class, 'delete']);
 });
 
-Route::resource('companies', 'CompanyController')->middleware('auth:sanctum');
+Route::resource('companies', CompanyController::class)->middleware('auth:sanctum');
 Route::resource('employees', 'EmployeeController')->middleware('auth:sanctum');

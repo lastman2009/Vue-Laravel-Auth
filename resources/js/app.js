@@ -10,7 +10,7 @@ import router from './router'
 window.axios = axios;
 
 // Configure the default headers for axios:
-axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+// axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // Define the base URL for all axios requests:
 axios.defaults.baseURL = 'http://localhost:8000';
