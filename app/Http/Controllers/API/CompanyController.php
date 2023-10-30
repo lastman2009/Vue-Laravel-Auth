@@ -5,13 +5,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Company; 
+use Illuminate\Support\Str;
 
 class CompanyController extends Controller
 {
     public function index()
     {
-        $companies = Company::all(); // Retrieve all companies
-        return view('companies.index', compact('companies'));
+        $companies = Company::paginate(2)->toArray();
+        return array_reverse($companies);
     }
 
     public function create()
@@ -32,17 +33,22 @@ class CompanyController extends Controller
         // Handle logo file upload if provided
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('public/logos');
-            $validatedData['logo'] = $logoPath;
+            $logoPath = Str::after($logoPath, 'public/');
+            $validatedData['logo'] = 'storage/' .$logoPath;
         }
-        Company::create($validatedData); // Create a new company
+        $company = Company::create($validatedData); // Create a new company
 
-        return redirect()->route('companies.index')->with('success', 'Company created successfully.');
+        return response()->json([
+            'message' => 'Company created successfully.',
+            'company' => $company,
+        ], 201); // 201 status code indicates resource created
     }
 
     public function show($id)
     {
-        $company = Company::findOrFail($id);
-        return view('companies.show', compact('company'));
+
+        $company = Company::find($id);
+        return response()->json($company);
     }
 
     public function edit($id)
@@ -54,7 +60,6 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         $company = Company::findOrFail($id);
-
         // Validate the incoming data
         $validatedData = $request->validate([
             'name' => 'required|string',
@@ -66,19 +71,22 @@ class CompanyController extends Controller
         // Handle logo file upload if provided
         if ($request->hasFile('logo')) {
             $logoPath = $request->file('logo')->store('public/logos');
-            $validatedData['logo'] = $logoPath;
+            $logoPath = Str::after($logoPath, 'public/');
+            $validatedData['logo'] = 'storage/' .$logoPath;
         }
-
         $company->update($validatedData); // Update the company
 
-        return redirect()->route('companies.index')->with('success', 'Company updated successfully.');
+        return response()->json(['message' => 'Company updated successfully']);
     }
 
     public function destroy($id)
     {
         $company = Company::findOrFail($id);
-        $company->delete(); // Delete the company
-
-        return redirect()->route('companies.index')->with('success', 'Company deleted successfully.');
+        if ($company) {
+            $company->delete(); // Delete the company
+            return response()->json(['message' => 'Company deleted successfully']);
+        } else {
+            return response()->json(['message' => 'Company not found'], 404);
+        }
     }
 }

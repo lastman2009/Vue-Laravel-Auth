@@ -6780,6 +6780,11 @@
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-4.0.3.tgz"
   "version" "4.0.3"
 
+"vue-toasted@^1.1.28":
+  "integrity" "sha512-UUzr5LX51UbbiROSGZ49GOgSzFxaMHK6L00JV8fir/CYNJCpIIvNZ5YmS4Qc8Y2+Z/4VVYRpeQL2UO0G800Raw=="
+  "resolved" "https://registry.npmjs.org/vue-toasted/-/vue-toasted-1.1.28.tgz"
+  "version" "1.1.28"
+
 "vue@^3.0.0", "vue@^3.0.5", "vue@3.0.5":
   "integrity" "sha512-TfaprOmtsAfhQau7WsomXZ8d9op/dkQLNIq8qPV3A0Vxs6GR5E+c1rfJS1SDkXRQj+dFyfnec7+U0Be1huiScg=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-3.0.5.tgz"

@@ -12,6 +12,7 @@ import EditBook from '../components/EditBook';
 
 import Companies from '../modules/Company/List';
 import AddCompany from '../modules/Company/Add';
+import EditCompany from '../modules/Company/Edit';
 
 
 export const routes = [
@@ -50,6 +51,12 @@ export const routes = [
         path: '/company/add',
         component: AddCompany
     },
+    {
+        name: 'editCompany',
+        path: '/company/edit/:id',
+        component: EditCompany
+    },
+    
     {
         name: 'books',
         path: '/books',

@@ -53,7 +53,8 @@ export default {
                         },
                     })
                     .then(response => {
-                        // this.$router.push({name: 'companies'})
+                        console.log(response.status  , "response" , response)
+                        this.$router.push({name: 'companies'})
                     })
                     .catch(function (error) {
                         console.error(error);
