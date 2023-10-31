@@ -19511,10 +19511,7 @@ __webpack_require__.r(__webpack_exports__);
           headers: {
             'Content-Type': 'multipart/form-data'
           }
-        }).then(function (response) {
-          _this.$router.push({
-            name: 'companies'
-          });
+        }).then(function (response) {// this.$router.push({name: 'companies'})
         })["catch"](function (error) {
           if (error.response.status === 422) {
             _self.errors = error.response.data.errors;
@@ -20097,7 +20094,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("
   }
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("span", {
   "class": "text-secondary"
-}, "Laravel Task")], -1
+}, "XEPOS Laravel + Vue.js Test")], -1
 /* HOISTED */
 );
 
@@ -20409,7 +20406,7 @@ var _hoisted_16 = {
   "class": "form-group"
 };
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, "Logo", -1
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)("label", null, "Logo (100x100)", -1
 /* HOISTED */
 );
 
@@ -20728,8 +20725,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       src: company.logo,
       alt: "My Image",
       style: {
-        "width": "100px",
-        "height": "100px"
+        "width": "50px",
+        "height": "50px"
       }
     }, null, 8
     /* PROPS */

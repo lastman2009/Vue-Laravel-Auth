@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Models\Company; 
+use App\Mail\EmailNotification;
 use Illuminate\Support\Str;
-
 class CompanyController extends Controller
 {
     public function index()
@@ -37,7 +38,8 @@ class CompanyController extends Controller
             $validatedData['logo'] = 'storage/' .$logoPath;
         }
         $company = Company::create($validatedData); // Create a new company
-
+        Mail::to('atifmalik2009@gmail.com')->send(new EmailNotification());
+        
         return response()->json([
             'message' => 'Company created successfully.',
             'company' => $company,

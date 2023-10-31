@@ -20,7 +20,7 @@
                 <td>{{ company.name }}</td>
                 <td>{{ company.email }}</td>
                 <td>{{ company.website }}</td>
-                <td> <img v-if="company.logo" :src="company.logo" alt="My Image" style="width: 100px; height: 100px;"/></td>
+                <td> <img v-if="company.logo" :src="company.logo" alt="My Image" style="width: 50px; height: 50px;"/></td>
                 <td>
                     <div class="btn-group" role="group">
                         <router-link :to="{name: 'editCompany', params: { id: company.id }}" class="btn btn-primary me-1"><i class="fas fa-edit"></i>

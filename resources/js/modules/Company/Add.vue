@@ -23,7 +23,7 @@
 
                     </div><br>
                     <div class="form-group">
-                        <label>Logo</label>
+                        <label>Logo (100x100)</label>
                         <input type="file" ref="image" class="form-control" @change="handleImageChange">
                         <div v-if="errors.logo" class="error">{{ errors.logo[0] }}</div>
 
@@ -67,7 +67,7 @@ export default {
                         },
                     })
                     .then(response => {
-                        this.$router.push({name: 'companies'})
+                        // this.$router.push({name: 'companies'})
                     })
                     .catch(function (error) {
                         if (error.response.status === 422) {
