@@ -1,8 +1,9 @@
 <template>
     <div>
         <h4 class="text-center">All Employee</h4><br/>
-        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/employee/add')">Add Employee</button>
-        <table class="table table-bordered">
+        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/employee/add')"> <i class="fas fa-plus"></i> Add Employee</button>
+        <Loader v-if="loading" />
+        <table class="table table-bordered" v-if="!loading">
             <thead>
             <tr>
                 <th>ID</th>
@@ -24,39 +25,33 @@
                 <td>{{ employee.company ? employee.company.name : '-' }}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <router-link :to="{name: 'editEmployee', params: { id: employee.id }}" class="btn btn-primary">Edit
+                        <router-link :to="{name: 'editEmployee', params: { id: employee.id }}" class="btn btn-primary me-1"> <i class="fas fa-edit"></i>
                         </router-link>
-                        <button class="btn btn-danger" @click="deleteCompany(company.id)">Delete</button>
+                        <button class="btn btn-danger" @click="deleteCompany(company.id)"> <i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             </tr>
-            <tr v-if="employees.data.length === 0">
+            <tr v-if="employees && employees.data && employees.data.length === 0">
                 <td class="text-center" colspan="7">No records found</td>
             </tr>
             </tbody>
              <!-- Pagination controls -->
         </table>
-        <ul class="pagination float-end">
-                    <li @click="fetchPaginatedData(employees.prev_page_url)" :class="{ 'd-none': !employees.prev_page_url }" class="btn btn-info me-2">
-                        <a   href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li @click="fetchPaginatedData(employees.next_page_url)" :class="{ 'd-none': !employees.next_page_url }" class="btn btn-info">
-                        <a  href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-
+            <pagination  v-if="!loading && employees" :prev="employees.prev_page_url" :next="employees.next_page_url" @fetchData="fetchPaginatedData"/>
     </div>
 </template>
 
 <script>
+import Pagination from '../../components/pagination.vue'
 export default {
+    components:{
+        'Pagination' : Pagination,
+    },
+
     data() {
         return {
-            employees: []
+            employees: [],
+            loading :false
         }
     },
     created() {
@@ -65,10 +60,13 @@ export default {
 
     methods: {
         fetchPaginatedData(url){
+            this.loading = true;
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
             this.$axios.get(url)
                 .then(response => {
                     this.employees = response.data;
+                    this.loading = false;
+
                 })
                 .catch(function (error) {
                     console.error(error);

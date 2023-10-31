@@ -4,7 +4,8 @@ require('./bootstrap')
 import App from './App.vue'
 import axios from 'axios'
 import router from './router'
-
+import Loader from './components/loader'; 
+import '@fortawesome/fontawesome-free/css/all.css'
 // Set up axios globally:
 window.axios = axios;
 
@@ -37,8 +38,8 @@ axios.interceptors.response.use(
 );
 
 
-
 const app = createApp(App)
+app.component('Loader', Loader); 
 app.config.globalProperties.$axios = axios;
 app.use(router)
 app.mount('#app')

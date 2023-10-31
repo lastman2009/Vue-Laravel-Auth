@@ -1,8 +1,9 @@
 <template>
     <div>
         <h4 class="text-center">All Companies</h4><br/>
-        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/company/add')">Add Company</button>
-        <table class="table table-bordered">
+        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/company/add')"><i class="fas fa-plus"></i> Add Company</button>
+        <Loader v-if="loading" />
+        <table class="table table-bordered" v-if="!loading">
             <thead>
             <tr>
                 <th>ID</th>
@@ -22,39 +23,34 @@
                 <td> <img v-if="company.logo" :src="company.logo" alt="My Image" style="width: 100px; height: 100px;"/></td>
                 <td>
                     <div class="btn-group" role="group">
-                        <router-link :to="{name: 'editCompany', params: { id: company.id }}" class="btn btn-primary">Edit
+                        <router-link :to="{name: 'editCompany', params: { id: company.id }}" class="btn btn-primary me-1"><i class="fas fa-edit"></i>
                         </router-link>
-                        <button class="btn btn-danger" @click="deleteCompany(company.id)">Delete</button>
+                        <button class="btn btn-danger" @click="deleteCompany(company.id)"><i class="fas fa-trash"></i></button>
                     </div>
                 </td>
             </tr>
-            <tr v-if="companies.data.length === 0">
-                <td colspan="7">No records found</td>
+            <tr v-if="companies && companies.data && companies.data.length === 0">
+                <td class="text-center" colspan="7">No records found</td>
             </tr>
             </tbody>
              <!-- Pagination controls -->
         </table>
-        <ul class="pagination float-end">
-                    <li @click="fetchPaginatedData(companies.prev_page_url)" :class="{ 'd-none': !companies.prev_page_url }" class="btn btn-info me-2">
-                        <a  href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li @click="fetchPaginatedData(companies.next_page_url)" :class="{ 'd-none': !companies.next_page_url }" class="btn btn-info">
-                        <a  href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-
+        <pagination v-if="!loading && companies" :prev="companies.prev_page_url" :next="companies.next_page_url" @fetchData="fetchPaginatedData"/>
     </div>
 </template>
 
 <script>
+import Pagination from '../../components/pagination.vue'
 export default {
+    components:{
+        'Pagination' : Pagination,
+    },
+
     data() {
         return {
-            companies: []
+            companies: [],
+            loading :false
+
         }
     },
     created() {
@@ -63,10 +59,12 @@ export default {
 
     methods: {
         fetchPaginatedData(url){
+            this.loading = true;
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
             this.$axios.get(url)
                 .then(response => {
                     this.companies = response.data;
+                    this.loading = false;
                 })
                 .catch(function (error) {
                     console.error(error);
