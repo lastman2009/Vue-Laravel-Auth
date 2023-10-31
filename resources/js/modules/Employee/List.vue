@@ -1,46 +1,48 @@
 <template>
     <div>
-        <h4 class="text-center">All Companies</h4><br/>
-        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/company/add')">Add Company</button>
+        <h4 class="text-center">All Employee</h4><br/>
+        <button type="button" class="btn btn-info mb-2 float-end" @click="this.$router.push('/employee/add')">Add Employee</button>
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
-                <th>Website</th>
-                <th>Logo</th>
+                <th>Phone</th>
+                <th>Company</th>
                 <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="company in companies.data" :key="company.id">
-                <td>{{ company.id }}</td>
-                <td>{{ company.name }}</td>
-                <td>{{ company.email }}</td>
-                <td>{{ company.website }}</td>
-                <td> <img v-if="company.logo" :src="company.logo" alt="My Image" style="width: 100px; height: 100px;"/></td>
+            <tr v-for="employee in employees.data" :key="employee.id">
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.first_name }}</td>
+                <td>{{ employee.last_name }}</td>
+                <td>{{ employee.email }}</td>
+                <td>{{ employee.phone }}</td>
+                <td>{{ employee.company ? employee.company.name : '-' }}</td>
                 <td>
                     <div class="btn-group" role="group">
-                        <router-link :to="{name: 'editCompany', params: { id: company.id }}" class="btn btn-primary">Edit
+                        <router-link :to="{name: 'editEmployee', params: { id: employee.id }}" class="btn btn-primary">Edit
                         </router-link>
                         <button class="btn btn-danger" @click="deleteCompany(company.id)">Delete</button>
                     </div>
                 </td>
             </tr>
-            <tr v-if="companies.data.length === 0">
-                <td colspan="7">No records found</td>
+            <tr v-if="employees.data.length === 0">
+                <td class="text-center" colspan="7">No records found</td>
             </tr>
             </tbody>
              <!-- Pagination controls -->
         </table>
         <ul class="pagination float-end">
-                    <li @click="fetchPaginatedData(companies.prev_page_url)" :class="{ 'd-none': !companies.prev_page_url }" class="btn btn-info me-2">
-                        <a  href="#" aria-label="Previous">
+                    <li @click="fetchPaginatedData(employees.prev_page_url)" :class="{ 'd-none': !employees.prev_page_url }" class="btn btn-info me-2">
+                        <a   href="#" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li @click="fetchPaginatedData(companies.next_page_url)" :class="{ 'd-none': !companies.next_page_url }" class="btn btn-info">
+                    <li @click="fetchPaginatedData(employees.next_page_url)" :class="{ 'd-none': !employees.next_page_url }" class="btn btn-info">
                         <a  href="#" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -54,11 +56,11 @@
 export default {
     data() {
         return {
-            companies: []
+            employees: []
         }
     },
     created() {
-        this.fetchPaginatedData('/api/companies');
+        this.fetchPaginatedData('/api/employee');
     },
 
     methods: {
@@ -66,7 +68,7 @@ export default {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
             this.$axios.get(url)
                 .then(response => {
-                    this.companies = response.data;
+                    this.employees = response.data;
                 })
                 .catch(function (error) {
                     console.error(error);
@@ -75,10 +77,10 @@ export default {
         },
         deleteCompany(id) {
             this.$axios.get('/sanctum/csrf-cookie').then(response => {
-                this.$axios.delete(`/api/companies/${id}`)
+                this.$axios.delete(`/api/employee/${id}`)
                     .then(response => {
-                        let i = this.companies.map(item => item.id).indexOf(id); // find index of your object
-                        this.companies.splice(i, 1)
+                        let i = this.employees.map(item => item.id).indexOf(id); // find index of your object
+                        this.employees.splice(i, 1)
                     })
                     .catch(function (error) {
                         console.error(error);

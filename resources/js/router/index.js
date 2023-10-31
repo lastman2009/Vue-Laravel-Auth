@@ -6,14 +6,13 @@ import Register from '../pages/Register';
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 
-import Books from '../components/Books';
-import AddBook from '../components/AddBook';
-import EditBook from '../components/EditBook';
-
 import Companies from '../modules/Company/List';
 import AddCompany from '../modules/Company/Add';
 import EditCompany from '../modules/Company/Edit';
 
+import Employee from '../modules/Employee/List';
+import AddEmployee from '../modules/Employee/Add';
+import EditEmployee from '../modules/Employee/Edit';
 
 export const routes = [
     {
@@ -56,21 +55,21 @@ export const routes = [
         path: '/company/edit/:id',
         component: EditCompany
     },
-    
+    //Employee Routes
     {
-        name: 'books',
-        path: '/books',
-        component: Books
+        name: 'employee',
+        path: '/employees',
+        component: Employee
     },
     {
-        name: 'addbook',
-        path: '/books/add',
-        component: AddBook
+        name: 'addEmployee',
+        path: '/employee/add',
+        component: AddEmployee
     },
     {
-        name: 'editbook',
-        path: '/books/edit/:id',
-        component: EditBook
+        name: 'editEmployee',
+        path: '/employee/edit/:id',
+        component: EditEmployee
     },
 ];
 

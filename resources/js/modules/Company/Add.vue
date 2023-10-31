@@ -7,20 +7,28 @@
                     <div class="form-group">
                         <label>Name</label>
                         <input type="text" class="form-control" v-model="company.name">
+                        <div v-if="errors.name" class="error">{{ errors.name[0] }}</div>
+
                     </div><br>
                     <div class="form-group">
                         <label>Email</label>
                         <input type="text" class="form-control" v-model="company.email">
+                        <div v-if="errors.email" class="error">{{ errors.email[0] }}</div>
+
                     </div><br>
                     <div class="form-group">
                         <label>Website</label>
                         <input type="text" class="form-control" v-model="company.website">
+                        <div v-if="errors.website" class="error">{{ errors.website[0] }}</div>
+
                     </div><br>
                     <div class="form-group">
                         <label>Logo</label>
                         <input type="file" ref="image" class="form-control" @change="handleImageChange">
+                        <div v-if="errors.logo" class="error">{{ errors.logo[0] }}</div>
+
                     </div><br>
-                    <button type="submit" class="btn btn-primary">Add Company</button>
+                    <button type="submit" class="btn btn-success float-end">Add Company</button>
                 </form>
             </div>
         </div>
@@ -31,15 +39,21 @@
 export default {
     data() {
         return {
-            company: {},
-            selectedImage: null,
-        }
+            company: {
+                name: '',
+                email: '',
+                website: '',
+            },
+            selectedImage: '',
+            errors: {},
+        }   
     },
     methods: {
         handleImageChange(event) {
             this.selectedImage = event.target.files[0];
         },
         addCompany() {
+            let _self= this
             const formData = new FormData();
             formData.append('logo', this.selectedImage);
             formData.append('name', this.company.name);
@@ -53,11 +67,12 @@ export default {
                         },
                     })
                     .then(response => {
-                        console.log(response.status  , "response" , response)
                         this.$router.push({name: 'companies'})
                     })
                     .catch(function (error) {
-                        console.error(error);
+                        if (error.response.status === 422) {
+                            _self.errors = error.response.data.errors;
+                        }
                     });
             })
         }
@@ -71,3 +86,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+.error{
+    color:red;
+}
+</style>

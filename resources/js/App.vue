@@ -9,9 +9,8 @@
                 <!-- for logged-in user-->
                 <div class="navbar-nav" v-if="isLoggedIn">
                     <router-link to="/dashboard" class="nav-item nav-link">Dashboard</router-link>
-                    <router-link to="/books" class="nav-item nav-link">Books</router-link>
                     <router-link to="/companies" class="nav-item nav-link">Companies</router-link>
-                    <router-link to="/employee" class="nav-item nav-link">Employee</router-link>
+                    <router-link to="/employees" class="nav-item nav-link">Employee</router-link>
                     <a class="nav-item nav-link" style="cursor: pointer;" @click="logout">Logout</a>
                 </div>
                 <!-- for non-logged user-->
